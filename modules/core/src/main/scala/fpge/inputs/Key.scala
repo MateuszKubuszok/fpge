@@ -5,7 +5,7 @@ import enumeratum._
 sealed abstract class Key(val id: Int) extends EnumEntry
 // scalastyle:off
 object Key extends Enum[Key] {
-  case object ANY_KEY extends Key(Int = -1)
+  case object ANY_KEY extends Key(-1)
   case object NUM_0 extends Key(7)
   case object NUM_1 extends Key(8)
   case object NUM_2 extends Key(9)

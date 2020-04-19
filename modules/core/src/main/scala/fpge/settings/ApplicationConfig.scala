@@ -9,19 +9,21 @@ import monix.eval.Task
 
 final case class ApplicationConfig(
   title:             Title,
-  size:              Resolution,
+  resolution:        Resolution,
   fullScreen:        FullScreen,
   openGL30:          OpenGL30,
+  vSync:             VSync,
   maxNetworkThreads: MaxNetworkThreads
 ) {
 
   private[fpge] def toGDXConfig: LwjglApplicationConfiguration = {
     val cfg = new LwjglApplicationConfiguration()
     cfg.title         = title.value.value
-    cfg.width         = size.width.value.value
-    cfg.height        = size.height.value.value
+    cfg.width         = resolution.width.value.value
+    cfg.height        = resolution.height.value.value
     cfg.fullscreen    = fullScreen.value
     cfg.useGL30       = openGL30.value
+    cfg.vSyncEnabled  = vSync.value
     cfg.maxNetThreads = maxNetworkThreads.value.value
     cfg
   }
