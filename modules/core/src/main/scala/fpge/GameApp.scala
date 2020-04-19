@@ -1,6 +1,7 @@
 package fpge
 
 import cats.effect.ExitCode
+import cats.effect.concurrent.Ref
 import fpge.events.{ AppEvent, EventBus, InputEvent, WindowEvent }
 import fpge.settings.ApplicationConfig
 import monix.catnap.MVar
@@ -15,16 +16,21 @@ trait GameApp[GameConfig, GameState] extends TaskApp {
       _ <- parseArguments(args) // TODO
       config <- loadConfig
       eventBus <- createEventBus
-      gameStateMVar <- MVar.of[Task, GameState](initialGameState)
+      gameStateRef <- Ref.of(initialGameState)
+      // TODO: pass MVar or whatever we use there
       _ <- Application.create(config, eventBus).use { application =>
         eventBus.subscription
           .evalMap { event =>
             for {
-              state <- gameStateMVar.read
+              state <- gameStateRef.get
               newState <- processAppEvent(application, state, event)
-              _ <- gameStateMVar.put(newState)
-            } yield ()
+              _ <- gameStateRef.set(newState)
+            } yield (event match {
+              case WindowEvent.ExitRequested => None
+              case _                         => Some(())
+            })
           }
+          .unNoneTerminate
           .compile
           .drain
       }

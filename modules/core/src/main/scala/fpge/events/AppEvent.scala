@@ -69,7 +69,10 @@ object WindowEvent {
 
   def listener(bus: EventBus): ApplicationListener =
     new ApplicationListener {
-      def create(): Unit = bus.publish(Created)
+      def create(): Unit = {
+        bus.publish(Created)
+        println("published!")
+      }
       def resize(width: Int, height: Int): Unit = {
         for {
           width <- refineV[Positive](width).map(Width.apply)

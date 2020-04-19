@@ -25,6 +25,7 @@ final case class ApplicationConfig(
     cfg.useGL30       = openGL30.value
     cfg.vSyncEnabled  = vSync.value
     cfg.maxNetThreads = maxNetworkThreads.value.value
+    cfg.forceExit     = false // TODO
     cfg
   }
 }
