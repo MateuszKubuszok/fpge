@@ -1,20 +1,23 @@
 package fpge
 
-import cats.effect.{ Resource, Sync }
+import cats.effect.Resource
 import com.badlogic.gdx
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication
+import fpge.events.{ EventBus, WindowEvent }
 import fpge.settings.ApplicationConfig
+import monix.eval.Task
 
-class Application(implementation: gdx.Application, val graphics: Graphics, val audio: Audio, val input: Input) {}
+class Application(implementation: gdx.Application, val graphics: Graphics, val audio: Audio, val input: Input) {
+}
 
 object Application {
 
-  def create[F[_]: Sync](listener: gdx.ApplicationListener, config: ApplicationConfig): Resource[F, Application] =
+  def create(config: ApplicationConfig, eventBus: EventBus): Resource[Task, Application] =
     Resource
       .make {
-        Sync[F].delay(new LwjglApplication(listener, config.toGDXConfig))
+        Task.delay(new LwjglApplication(WindowEvent.listener(eventBus), config.toGDXConfig))
       } { application =>
-        Sync[F].delay(application.exit())
+        Task.delay(application.exit())
       }
       .map { application =>
         new Application(

@@ -1,19 +1,18 @@
 package fpge.settings
 
-import cats.effect.Sync
-import cats.syntax.flatMap._
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration
 import com.typesafe.config.{ Config, ConfigFactory }
 import pureconfig._
 import pureconfig.generic.auto._
 import eu.timepit.refined.pureconfig._
+import monix.eval.Task
 
 final case class ApplicationConfig(
-  title:             Title,
-  size:              Size,
-  fullScreen:        FullScreen,
-  openGL30:          OpenGL30,
-  maxNetworkThreads: MaxNetworkThreads
+                                    title:             Title,
+                                    size:              Resolution,
+                                    fullScreen:        FullScreen,
+                                    openGL30:          OpenGL30,
+                                    maxNetworkThreads: MaxNetworkThreads
 ) {
 
   private[fpge] def toGDXConfig: LwjglApplicationConfiguration = {
@@ -30,9 +29,9 @@ final case class ApplicationConfig(
 
 object ApplicationConfig {
 
-  def default[F[_]: Sync]: F[ApplicationConfig] = Sync[F].delay(ConfigFactory.defaultApplication()).flatMap(load[F](_))
+  def default: Task[ApplicationConfig] = Task(ConfigFactory.defaultApplication).flatMap(load)
 
-  def load[F[_]: Sync](config: Config): F[ApplicationConfig] = Sync[F].delay {
-    ConfigSource.fromConfig(config).load[ApplicationConfig]
-  }
+  def load(config: Config): Task[ApplicationConfig] = Task(
+    ConfigSource.fromConfig(config).loadOrThrow[ApplicationConfig]
+  )
 }

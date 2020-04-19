@@ -13,6 +13,7 @@ object Dependencies {
   val catsVersion     = "2.0.0"
   val declinedVersion = "1.0.0"
   val drosteVersion   = "0.8.0"
+  val fs2Version      = "2.2.1"
   val libGDXVersion   = "1.9.10"
   val monixVersion    = "3.1.0"
   val monocleVersion  = "2.0.0"
@@ -32,6 +33,8 @@ object Dependencies {
   val cats              = "org.typelevel" %% "cats-core" % catsVersion
   val catsLaws          = "org.typelevel" %% "cats-laws" % catsVersion
   val droste            = "io.higherkindness" %% "droste-core" % drosteVersion
+  val fs2               = "co.fs2" %% "fs2-core" % fs2Version
+  val fs2IO             = "co.fs2" %% "fs2-io" % fs2Version
   val magnolia          = "com.propensive" %% "magnolia" % "0.15.0"
   val monocle           = "com.github.julien-truffaut" %% "monocle-core" % monocleVersion
   val monocleMacro      = "com.github.julien-truffaut" %% "monocle-macro" % monocleVersion
@@ -71,6 +74,8 @@ trait Dependencies {
     libGDXNative,
     libGDXLWJGL,
     cats,
+    fs2,
+    fs2IO,
     magnolia,
     monocle,
     monocleMacro,
