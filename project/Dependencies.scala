@@ -10,14 +10,15 @@ object Dependencies {
   val crossScalaVersions = Seq("2.13.1")
 
   // libraries versions
-  val catsVersion     = "2.0.0"
-  val declinedVersion = "1.0.0"
-  val drosteVersion   = "0.8.0"
-  val fs2Version      = "2.2.1"
-  val libGDXVersion   = "1.9.10"
-  val monixVersion    = "3.1.0"
-  val monocleVersion  = "2.0.0"
-  val specs2Version   = "4.9.3"
+  val catsVersion       = "2.0.0"
+  val declinedVersion   = "1.0.0"
+  val drosteVersion     = "0.8.0"
+  val enumeratumVersion = "1.5.15"
+  val fs2Version        = "2.2.1"
+  val libGDXVersion     = "1.9.10"
+  val monixVersion      = "3.1.0"
+  val monocleVersion    = "2.0.0"
+  val specs2Version     = "4.9.3"
 
   // resolvers
   val resolvers = Seq(
@@ -33,6 +34,7 @@ object Dependencies {
   val cats              = "org.typelevel" %% "cats-core" % catsVersion
   val catsLaws          = "org.typelevel" %% "cats-laws" % catsVersion
   val droste            = "io.higherkindness" %% "droste-core" % drosteVersion
+  val enumeratum        = "com.beachape" %% "enumeratum" % enumeratumVersion
   val fs2               = "co.fs2" %% "fs2-core" % fs2Version
   val fs2IO             = "co.fs2" %% "fs2-io" % fs2Version
   val magnolia          = "com.propensive" %% "magnolia" % "0.15.0"
@@ -74,6 +76,7 @@ trait Dependencies {
     libGDXNative,
     libGDXLWJGL,
     cats,
+    enumeratum,
     fs2,
     fs2IO,
     magnolia,

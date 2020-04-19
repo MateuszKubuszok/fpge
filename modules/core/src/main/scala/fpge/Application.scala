@@ -3,7 +3,7 @@ package fpge
 import cats.effect.Resource
 import com.badlogic.gdx
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication
-import fpge.events.{ EventBus, WindowEvent }
+import fpge.events.{ EventBus, InputEvent, WindowEvent }
 import fpge.settings.ApplicationConfig
 import monix.eval.Task
 
@@ -20,6 +20,7 @@ object Application {
         Task.delay(application.exit())
       }
       .map { application =>
+        application.getInput.setInputProcessor(InputEvent.listener(eventBus))
         new Application(
           implementation = application,
           graphics       = new Graphics(application.getGraphics),

@@ -1,7 +1,7 @@
 package fpge
 
 import cats.effect.ExitCode
-import fpge.events.{ AppEvent, EventBus, WindowEvent }
+import fpge.events.{ AppEvent, EventBus, InputEvent, WindowEvent }
 import fpge.settings.ApplicationConfig
 import monix.catnap.MVar
 import monix.eval.{ Task, TaskApp }
@@ -33,12 +33,17 @@ trait GameApp[GameConfig, GameState] extends TaskApp {
 
   def processAppEvent(application: Application, gameState: GameState, appEvent: AppEvent): Task[GameState] =
     appEvent match {
+      case inputEvent: InputEvent => processInputEvent(application, gameState, inputEvent)
       case windowEvent: WindowEvent => processWindowEvent(application, gameState, windowEvent)
     }
 
   def parseArguments(args: List[String]): Task[GameConfig] // TODO use library
 
   def initialGameState: GameState
+
+  def processInputEvent(application: Application,
+                         gameState:   GameState,
+                        inputEvent: InputEvent): Task[GameState]
 
   def processWindowEvent(application: Application,
                          gameState:   GameState,
