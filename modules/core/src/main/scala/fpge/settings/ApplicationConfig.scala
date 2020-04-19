@@ -31,9 +31,9 @@ final case class ApplicationConfig(
 
 object ApplicationConfig {
 
-  def default: Task[ApplicationConfig] = Task(ConfigFactory.defaultApplication).flatMap(load)
+  def default: Task[ApplicationConfig] = Task(ConfigFactory.load()).flatMap(load)
 
   def load(config: Config): Task[ApplicationConfig] = Task(
-    ConfigSource.fromConfig(config).loadOrThrow[ApplicationConfig]
+    ConfigSource.fromConfig(config).at("fpge").loadOrThrow[ApplicationConfig]
   )
 }

@@ -28,7 +28,7 @@ object Dependencies {
 
   // game library
   val libGDX       = "com.badlogicgames.gdx" % "gdx" % libGDXVersion
-  val libGDXNative = "com.badlogicgames.gdx" % "gdx-platform" % libGDXVersion
+  val libGDXNative = "com.badlogicgames.gdx" % "gdx-platform" % libGDXVersion classifier "natives-desktop"
   val libGDXLWJGL  = "com.badlogicgames.gdx" % "gdx-backend-lwjgl" % libGDXVersion
   // functional libraries
   val cats              = "org.typelevel" %% "cats-core" % catsVersion

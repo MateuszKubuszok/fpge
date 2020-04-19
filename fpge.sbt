@@ -1,7 +1,7 @@
 import sbt._
 import Settings._
 
-lazy val root = project.root.setName("fpge").setDescription("FP game engine build").configureRoot.aggregate(core)
+lazy val root = project.root.setName("fpge").setDescription("FP game engine build").configureRoot.aggregate(core, game)
 
 val core = project
   .from("core")

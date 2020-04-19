@@ -1,7 +1,7 @@
 package game
 
 import fpge.{ Application, GameApp }
-import fpge.events.WindowEvent
+import fpge.events.{ InputEvent, WindowEvent }
 import monix.eval.Task
 
 object Run extends GameApp[Unit, Unit] {
@@ -11,5 +11,8 @@ object Run extends GameApp[Unit, Unit] {
   override def initialGameState: Unit = ()
 
   override def processWindowEvent(application: Application, gameState: Unit, windowEvent: WindowEvent): Task[Unit] =
+    Task.unit
+
+  override def processInputEvent(application: Application, gameState: Unit, inputEvent: InputEvent): Task[Unit] =
     Task.unit
 }
