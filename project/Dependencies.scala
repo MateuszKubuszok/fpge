@@ -10,11 +10,13 @@ object Dependencies {
   val crossScalaVersions = Seq("2.13.1")
 
   // libraries versions
-  val catsVersion    = "2.0.0"
-  val drosteVersion  = "0.8.0"
-  val monixVersion   = "3.1.0"
-  val monocleVersion = "2.0.0"
-  val specs2Version  = "4.9.3"
+  val catsVersion     = "2.0.0"
+  val declinedVersion = "1.0.0"
+  val drosteVersion   = "0.8.0"
+  val libGDXVersion   = "1.9.10"
+  val monixVersion    = "3.1.0"
+  val monocleVersion  = "2.0.0"
+  val specs2Version   = "4.9.3"
 
   // resolvers
   val resolvers = Seq(
@@ -22,19 +24,28 @@ object Dependencies {
     Resolver typesafeRepo "releases"
   )
 
+  // game library
+  val libGDX       = "com.badlogicgames.gdx" % "gdx" % libGDXVersion
+  val libGDXNative = "com.badlogicgames.gdx" % "gdx-platform" % libGDXVersion
+  val libGDXLWJGL  = "com.badlogicgames.gdx" % "gdx-backend-lwjgl" % libGDXVersion
   // functional libraries
-  val cats         = "org.typelevel" %% "cats-core" % catsVersion
-  val catsLaws     = "org.typelevel" %% "cats-laws" % catsVersion
-  val droste       = "io.higherkindness" %% "droste-core" % drosteVersion
-  val magnolia     = "com.propensive" %% "magnolia" % "0.15.0"
-  val monocle      = "com.github.julien-truffaut" %% "monocle-core" % monocleVersion
-  val monocleMacro = "com.github.julien-truffaut" %% "monocle-macro" % monocleVersion
+  val cats              = "org.typelevel" %% "cats-core" % catsVersion
+  val catsLaws          = "org.typelevel" %% "cats-laws" % catsVersion
+  val droste            = "io.higherkindness" %% "droste-core" % drosteVersion
+  val magnolia          = "com.propensive" %% "magnolia" % "0.15.0"
+  val monocle           = "com.github.julien-truffaut" %% "monocle-core" % monocleVersion
+  val monocleMacro      = "com.github.julien-truffaut" %% "monocle-macro" % monocleVersion
+  val newtype           = "io.estatico" %% "newtype" % "0.4.3"
+  val refined           = "eu.timepit" %% "refined" % "0.9.13"
+  val refindCats        = "eu.timepit" %% "refined-cats" % "0.9.13"
+  val refinedDecline    = "com.monovore" %% "decline-refined" % declinedVersion
+  val refinedPureConfig = "eu.timepit" %% "refined-pureconfig" % "0.9.13"
   // async
   val monixExecution = "io.monix" %% "monix-execution" % monixVersion
   val monixEval      = "io.monix" %% "monix-eval" % monixVersion
   val monixBio       = "io.monix" %% "monix-bio" % "0.1.0"
   // config
-  val decline     = "com.monovore" %% "decline" % "1.0.0"
+  val decline     = "com.monovore" %% "decline" % declinedVersion
   val scalaConfig = "com.typesafe" % "config" % "1.4.0"
   val pureConfig  = "com.github.pureconfig" %% "pureconfig" % "0.12.3"
   // logging
@@ -56,10 +67,18 @@ trait Dependencies {
   val commonResolvers = resolvers
 
   val mainDeps = Seq(
+    libGDX,
+    libGDXNative,
+    libGDXLWJGL,
     cats,
     magnolia,
     monocle,
     monocleMacro,
+    newtype,
+    refined,
+    refindCats,
+    refinedDecline,
+    refinedPureConfig,
     decline,
     scalaConfig,
     pureConfig,
