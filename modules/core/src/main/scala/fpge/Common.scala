@@ -1,3 +1,0 @@
-package fpge
-
-object Common
