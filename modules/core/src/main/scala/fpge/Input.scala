@@ -2,6 +2,4 @@ package fpge
 
 import com.badlogic.gdx
 
-class Input(implementation: gdx.Input) {
-
-}
+class Input(implementation: gdx.Input) {}

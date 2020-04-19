@@ -10,11 +10,11 @@ package object settings {
   @newtype case class Title(value: String Refined NonEmpty)
 
   @newtype case class Height(value: Int Refined Positive)
-  @newtype case class Width(value: Int Refined Positive)
+  @newtype case class Width(value:  Int Refined Positive)
 
   @newtype case class MaxNetworkThreads(value: Int Refined Positive)
 
-  @newtype case class OpenGL30(value: Boolean)
+  @newtype case class OpenGL30(value:   Boolean)
   @newtype case class FullScreen(value: Boolean)
-  @newtype case class VSync(value: Boolean)
+  @newtype case class VSync(value:      Boolean)
 }

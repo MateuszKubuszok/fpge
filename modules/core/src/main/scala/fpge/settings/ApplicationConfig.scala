@@ -8,11 +8,11 @@ import eu.timepit.refined.pureconfig._
 import monix.eval.Task
 
 final case class ApplicationConfig(
-                                    title:             Title,
-                                    size:              Resolution,
-                                    fullScreen:        FullScreen,
-                                    openGL30:          OpenGL30,
-                                    maxNetworkThreads: MaxNetworkThreads
+  title:             Title,
+  size:              Resolution,
+  fullScreen:        FullScreen,
+  openGL30:          OpenGL30,
+  maxNetworkThreads: MaxNetworkThreads
 ) {
 
   private[fpge] def toGDXConfig: LwjglApplicationConfiguration = {

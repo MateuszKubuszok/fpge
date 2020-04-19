@@ -7,8 +7,7 @@ import fpge.events.{ EventBus, InputEvent, WindowEvent }
 import fpge.settings.ApplicationConfig
 import monix.eval.Task
 
-class Application(implementation: gdx.Application, val graphics: Graphics, val audio: Audio, val input: Input) {
-}
+class Application(implementation: gdx.Application, val graphics: Graphics, val audio: Audio, val input: Input) {}
 
 object Application {
 
@@ -16,9 +15,7 @@ object Application {
     Resource
       .make {
         Task.delay(new LwjglApplication(WindowEvent.listener(eventBus), config.toGDXConfig))
-      } { application =>
-        Task.delay(application.exit())
-      }
+      }(application => Task.delay(application.exit()))
       .map { application =>
         application.getInput.setInputProcessor(InputEvent.listener(eventBus))
         new Application(

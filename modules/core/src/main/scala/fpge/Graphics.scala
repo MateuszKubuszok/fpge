@@ -2,6 +2,4 @@ package fpge
 
 import com.badlogic.gdx
 
-class Graphics(implementation: gdx.Graphics) {
-
-}
+class Graphics(implementation: gdx.Graphics) {}

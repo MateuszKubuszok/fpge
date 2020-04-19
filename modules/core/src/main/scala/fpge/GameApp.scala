@@ -17,13 +17,16 @@ trait GameApp[GameConfig, GameState] extends TaskApp {
       eventBus <- createEventBus
       gameStateMVar <- MVar.of[Task, GameState](initialGameState)
       _ <- Application.create(config, eventBus).use { application =>
-        eventBus.subscription.evalMap { event =>
-          for {
-            state <- gameStateMVar.read
-            newState <- processAppEvent(application, state, event)
-            _ <- gameStateMVar.put(newState)
-          } yield ()
-        }.compile.drain
+        eventBus.subscription
+          .evalMap { event =>
+            for {
+              state <- gameStateMVar.read
+              newState <- processAppEvent(application, state, event)
+              _ <- gameStateMVar.put(newState)
+            } yield ()
+          }
+          .compile
+          .drain
       }
     } yield ExitCode.Success
 
@@ -33,7 +36,7 @@ trait GameApp[GameConfig, GameState] extends TaskApp {
 
   def processAppEvent(application: Application, gameState: GameState, appEvent: AppEvent): Task[GameState] =
     appEvent match {
-      case inputEvent: InputEvent => processInputEvent(application, gameState, inputEvent)
+      case inputEvent:  InputEvent  => processInputEvent(application, gameState, inputEvent)
       case windowEvent: WindowEvent => processWindowEvent(application, gameState, windowEvent)
     }
 
@@ -41,11 +44,7 @@ trait GameApp[GameConfig, GameState] extends TaskApp {
 
   def initialGameState: GameState
 
-  def processInputEvent(application: Application,
-                         gameState:   GameState,
-                        inputEvent: InputEvent): Task[GameState]
+  def processInputEvent(application: Application, gameState: GameState, inputEvent: InputEvent): Task[GameState]
 
-  def processWindowEvent(application: Application,
-                         gameState:   GameState,
-                         windowEvent: WindowEvent): Task[GameState]
+  def processWindowEvent(application: Application, gameState: GameState, windowEvent: WindowEvent): Task[GameState]
 }
