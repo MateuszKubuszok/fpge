@@ -10,8 +10,10 @@ import monix.eval.{ Coeval, Task, TaskApp }
 import monix.execution.Scheduler
 import monix.execution.atomic.PaddingStrategy
 
-trait GameApp[GameConfig, GameState] extends TaskApp {
-  // TODO: parse arguments
+class GameApp[GameConfig, GameState](gameLogic: GameLogic[GameConfig, GameState]) extends TaskApp {
+
+  import gameLogic._
+
   final override def run(args: List[String]): Task[ExitCode] =
     for {
       _ <- parseArguments(args) // TODO
@@ -46,14 +48,4 @@ trait GameApp[GameConfig, GameState] extends TaskApp {
       case inputEvent:  InputEvent  => processInputEvent(application, gameState, inputEvent)
       case windowEvent: WindowEvent => processWindowEvent(application, gameState, windowEvent)
     }
-
-  def parseArguments(args: List[String]): Task[GameConfig] // TODO use library
-
-  def initialGameState: GameState
-
-  def processInputEvent(application: Application, gameState: GameState, inputEvent: InputEvent): GameState
-
-  def processWindowEvent(application: Application, gameState: GameState, windowEvent: WindowEvent): GameState
-
-  def render(application: Application, gameState: GameState): Coeval[Unit]
 }
