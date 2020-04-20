@@ -6,7 +6,8 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication
 import com.badlogic.gdx.Gdx
 import fpge.events.{ EventBus, InputEvent, WindowEvent }
 import fpge.settings.ApplicationConfig
-import monix.eval.Task
+import monix.catnap.MVar
+import monix.eval.{ Coeval, Task }
 
 import scala.concurrent.duration._
 
@@ -15,7 +16,12 @@ class Application(implementation: gdx.Application, val graphics: Graphics, val a
 object Application {
 
   @SuppressWarnings(Array("org.wartremover.warts.Equals", "org.wartremover.warts.Null", "org.wartremover.warts.While"))
-  def create(config: ApplicationConfig, eventBus: EventBus): Resource[Task, Application] =
+  def create(
+    config:          ApplicationConfig,
+    eventBus:        EventBus,
+    applicationMVar: MVar[Task, Application],
+    redraw:          Coeval[Unit]
+  ): Resource[Task, Application] =
     Resource
       .make {
         Task
@@ -23,7 +29,7 @@ object Application {
             Gdx.app = null // scalastyle:ignore
             val fireAndForget =
               new Thread(() => {
-                new LwjglApplication(WindowEvent.listener(eventBus), config.toGDXConfig)
+                new LwjglApplication(WindowEvent.listener(eventBus, redraw), config.toGDXConfig)
                 ()
               })
             fireAndForget.setDaemon(true)
@@ -36,13 +42,14 @@ object Application {
             }
           }
       }(application => Task.delay(application.exit()))
-      .map { application =>
+      .evalMap { application =>
         application.getInput.setInputProcessor(InputEvent.listener(eventBus))
-        new Application(
+        val wrapper = new Application(
           implementation = application,
           graphics       = new Graphics(application.getGraphics),
           audio          = new Audio(application.getAudio),
           input          = new Input(application.getInput)
         )
+        applicationMVar.put(wrapper).map(_ => wrapper)
       }
 }

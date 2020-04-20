@@ -6,6 +6,7 @@ import eu.timepit.refined.numeric.{ NonNegative, Positive }
 import fpge.ADT
 import fpge.inputs.{ Button, Key, Position, ScrollingDirection, X, Y }
 import fpge.settings.{ Height, Resolution, Width }
+import monix.eval.Coeval
 
 sealed trait AppEvent extends ADT
 
@@ -67,18 +68,15 @@ object WindowEvent {
   case object ResumeRequested extends WindowEvent
   case object ExitRequested extends WindowEvent
 
-  def listener(bus: EventBus): ApplicationListener =
+  def listener(bus: EventBus, redraw: Coeval[Unit]): ApplicationListener =
     new ApplicationListener {
-      def create(): Unit = {
-        bus.publish(Created)
-        println("published!")
-      }
+      def create(): Unit = bus.publish(Created)
       def resize(width: Int, height: Int): Unit = {
         for {
           width <- refineV[Positive](width).map(Width.apply)
           height <- refineV[Positive](height).map(Height.apply)
         } yield bus.publish(Resized(Resolution(width, height)))
-        ()
+        redraw()
       }
       def render():  Unit = bus.publish(RenderRequested)
       def pause():   Unit = bus.publish(PauseRequested)
