@@ -63,7 +63,6 @@ sealed trait WindowEvent extends AppEvent
 object WindowEvent {
   case object Created extends WindowEvent
   final case class Resized(resolution: Resolution) extends WindowEvent
-  case object RenderRequested extends WindowEvent
   case object PauseRequested extends WindowEvent
   case object ResumeRequested extends WindowEvent
   case object ExitRequested extends WindowEvent
@@ -76,9 +75,9 @@ object WindowEvent {
           width <- refineV[Positive](width).map(Width.apply)
           height <- refineV[Positive](height).map(Height.apply)
         } yield bus.publish(Resized(Resolution(width, height)))
-        redraw()
+        ()
       }
-      def render():  Unit = bus.publish(RenderRequested)
+      def render():  Unit = redraw()
       def pause():   Unit = bus.publish(PauseRequested)
       def resume():  Unit = bus.publish(ResumeRequested)
       def dispose(): Unit = bus.publish(ExitRequested)

@@ -25,6 +25,7 @@ class GameApp[GameConfig, GameState](gameLogic: GameLogic[GameConfig, GameState]
       _ <- Application.create(config, eventBus, applicationMVal, redraw(applicationMVal, gameStateRef)).use {
         application =>
           eventBus.subscription
+          //.evalMap(event => gameStateRef.update(processAppEvent(application, _, event)))
             .evalMap(event => gameStateRef.update(processAppEvent(application, _, event)))
             .compile
             .drain
