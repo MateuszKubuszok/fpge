@@ -8,7 +8,7 @@ import org.scalafmt.sbt.ScalafmtPlugin.autoImport._
 import org.scalastyle.sbt.ScalastylePlugin.autoImport._
 import sbtassembly.AssemblyPlugin.autoImport._
 import spray.revolver.RevolverPlugin.autoImport._
-import wartremover._
+import wartremover.WartRemover.autoImport._
 
 object Settings extends Dependencies {
 
