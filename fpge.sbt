@@ -26,5 +26,5 @@ val game = project
   .configureTests()
   .dependsOn(core)
 
-addCommandAlias("fullTest", ";test;scalastyle")
-addCommandAlias("fullCoverageTest", ";coverage;test;fun:test;scalastyle")
+addCommandAlias("fullTest", ";test")
+addCommandAlias("fullCoverageTest", ";coverage;test")
